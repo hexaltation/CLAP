@@ -1,34 +1,37 @@
 let containers = document.getElementsByClassName('colorLevel');
-let colorLevels =   {
-                    "in":
-                        {  
+let colorLevels =   { 
                         "red":  {
-                                "min":0,
-                                "max":255
+                                "in":{
+                                    "min":0,
+                                    "max":255
                                 },
-                        "green":{
-                                "min":0,
-                                "max":255
+                                "out":{
+                                    "min":0,
+                                    "max":255
                                 },
-                        "blue": {
-                                "min":0,
-                                "max":255
-                                }
+                                "color_value":"#FF0000"
                         },
-                    "out":
-                        {
-                        "red":  {
-                                "min":0,
-                                "max":255
-                                },
                         "green":{
-                                "min":0,
-                                "max":255
+                                "in":{
+                                    "min":0,
+                                    "max":255
                                 },
+                                "out":{
+                                    "min":0,
+                                    "max":255
+                                },
+                                "color_value":"#00FF00"
+                        },
                         "blue": {
-                                "min":0,
-                                "max":255
-                                }
+                                "in":{
+                                    "min":0,
+                                    "max":255
+                                },
+                                "out":{
+                                    "min":0,
+                                    "max":255
+                                },
+                                "color_value":"#0000FF"
                         }
                     }
 
