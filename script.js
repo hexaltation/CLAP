@@ -1,4 +1,9 @@
 let containers = document.getElementsByClassName('colorLevel');
+let canvas_default = {
+                        "width":120,
+                        "height":120,
+                        "background":"#000000"
+}
 let colorLevels =   { 
                         "red":  {
                                 "in":{
@@ -35,19 +40,21 @@ let colorLevels =   {
                         }
                     }
 
+var counter = 0
 for (let container of containers){
-    let slider= document.createElement("canvas");
+    counter ++;
+    let slider = document.createElement("canvas");
+    slider.id = "color_level_"+counter
     container.appendChild(slider);
     draw(slider);
 }
 
 function draw(elem){
-    console.log(elem)
     let ctx = elem.getContext('2d');
     try{
-        ctx.canvas.width = 120;
-        ctx.canvas.height = 120;
-        ctx.canvas.style.background = "#000000";
+        ctx.canvas.width = canvas_default.width;
+        ctx.canvas.height = canvas_default.height;
+        ctx.canvas.style.background = canvas_default.background;
     }catch(e){
         console.log(e);
     }
