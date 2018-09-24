@@ -15,7 +15,9 @@ let colorLevels =   {
                                     "min":0,
                                     "max":255
                                 },
-                                "color_value":"#FF0000"
+                                "color_value":"#FF0000",
+                                "active":true,
+                                "label":"red"
                         },
                         "green":{
                                 "in":{
@@ -26,7 +28,9 @@ let colorLevels =   {
                                     "min":0,
                                     "max":255
                                 },
-                                "color_value":"#00FF00"
+                                "color_value":"#00FF00",
+                                "active":true,
+                                "label":"green"
                         },
                         "blue": {
                                 "in":{
@@ -37,17 +41,21 @@ let colorLevels =   {
                                     "min":0,
                                     "max":255
                                 },
-                                "color_value":"#0000FF"
+                                "color_value":"#0000FF",
+                                "active":true,
+                                "label":"blue"
                         }
                     }
 
 var counter = 0
+
 for (let container of containers){
     counter ++;
     let slider = document.createElement("canvas");
     slider.id = "color_level_"+counter
     container.appendChild(slider);
     draw(slider);
+    showHideBoxes(container);
 }
 
 function draw(elem){
@@ -64,7 +72,9 @@ function draw(elem){
 
 function draw_levels(ctx){
     for (let color in colorLevels){
-        draw_level(ctx, colorLevels[color]);
+        if (colorLevels[color].active){
+            draw_level(ctx, colorLevels[color]);
+        }
     }
 }
 
@@ -82,4 +92,21 @@ function draw_level(ctx, color){
                 canvas_default.height - canvas_default.margin);
     ctx.closePath();
     ctx.fill();
+}
+
+function showHideBoxes(container){
+    for (let color in colorLevels){
+        let box = document.createElement("input");
+        let label = document.createElement("label");
+        box.type = "checkbox";
+        box.value = colorLevels[color].label;
+        box.id = "cb-"+colorLevels[color].label;
+        if (colorLevels[color].active){
+            box.checked=true;
+        }
+        label.for = box.id;
+        label.innerHTML = colorLevels[color].label;
+        container.appendChild(box);
+        container.appendChild(label);
+    }
 }
