@@ -79,7 +79,6 @@ function draw_levels(ctx){
 }
 
 function draw_level(ctx, color){
-    console.log((color.in.min*(canvas_default.width-2*canvas_default.margin))/255,(color.in.max*(canvas_default.width-2*canvas_default.margin))/255, (color.out.max*(canvas_default.width-2*canvas_default.margin))/255, (color.out.min*(canvas_default.width-2*canvas_default.margin))/255)
     ctx.fillStyle=color.color_value;
     ctx.beginPath();
     ctx.moveTo((color.in.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
@@ -104,6 +103,16 @@ function showHideBoxes(container){
         if (colorLevels[color].active){
             box.checked=true;
         }
+        box.addEventListener('change', (evt)=>{
+            let current_canvas = container.getElementsByTagName('canvas')[0];
+            let current_color = evt.target.value;
+            if (evt.target.checked){
+                colorLevels[current_color].active = true;
+            }else{
+                colorLevels[current_color].active = false;
+            }
+            draw(current_canvas);
+        });
         label.for = box.id;
         label.innerHTML = colorLevels[color].label;
         container.appendChild(box);
