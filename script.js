@@ -2,7 +2,7 @@ let containers = document.getElementsByClassName('colorLevel');
 let canvas_default ={
                         "width":120,
                         "height":120,
-                        "background":"#000000",
+                        "background":"#AAAAAA",
                         "margin":10
                     }
 let colorLevels =   { 
@@ -81,16 +81,44 @@ function draw_levels(ctx){
 function draw_level(ctx, color){
     ctx.fillStyle=color.color_value;
     ctx.beginPath();
-    ctx.moveTo((color.in.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                0 + canvas_default.margin);
-    ctx.lineTo((color.in.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                0 + canvas_default.margin);
-    ctx.lineTo((color.out.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                canvas_default.height - canvas_default.margin);
-    ctx.lineTo((color.out.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                canvas_default.height - canvas_default.margin);
+    let vertices = {
+        "nw" : [(color.in.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
+            0 + canvas_default.margin],
+        "ne" : [(color.in.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
+            0 + canvas_default.margin],
+        "se" : [(color.out.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
+            canvas_default.height - canvas_default.margin],
+        "sw" : [(color.out.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
+            canvas_default.height - canvas_default.margin]
+    }
+    ctx.moveTo(vertices.nw[0], vertices.nw[1]);
+    ctx.lineTo(vertices.ne[0], vertices.ne[1]);
+    ctx.lineTo(vertices.se[0], vertices.se[1]);
+    ctx.lineTo(vertices.sw[0], vertices.sw[1]);
     ctx.closePath();
     ctx.fill();
+    draw_vertices(ctx, color.color_value, vertices);
+}
+
+function draw_vertices(ctx, color, vertices){
+    console.log(vertices);
+    for (let vertex in vertices){
+        console.log(vertices[vertex], typeof(vertices[vertex]));
+        console.log('hello')
+        draw_vertex(ctx, color, vertices[vertex]);
+    }
+}
+
+function draw_vertex(ctx, color, vertex){
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(vertex[0]-5, vertex[1]-5);
+    ctx.lineTo(vertex[0]+5, vertex[1]-5);
+    ctx.lineTo(vertex[0]+5, vertex[1]+5);
+    ctx.lineTo(vertex[0]-5, vertex[1]+5);
+    ctx.closePath();
+    ctx.stroke();
 }
 
 function showHideBoxes(container){
