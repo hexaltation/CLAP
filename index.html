@@ -11,18 +11,41 @@
     <div class='colorLevel'></div>
     <script src="clap.js"></script>
     <script>
-      let canvas_default ={
+      let canvas_default_1 ={
           "width":130,
           "height":130,
           "background":"#BBBBBB",
-          "margin":11
+          "margin":10
+      }
+      let canvas_default_2 ={
+          "width":1200,
+          "height":50,
+          "background":"#000000",
+          "margin":15
+      }
+      let canvas_default_3 ={
+          "width":150,
+          "height":300,
+          "background":"#555555",
+          "margin":5
       }
       let clap_counter = 0
       let containers = document.getElementsByClassName('colorLevel');
 
       for (let container of containers){
           clap_counter ++;
-          new Clap(container, clap_counter, canvas_default);
+          let settings = {};
+          console.log(clap_counter);
+          if (clap_counter==1){
+            settings = canvas_default_1;
+          }else if (clap_counter==2){
+            settings = canvas_default_2;
+          }
+          else if (clap_counter==3){
+            settings = canvas_default_3;
+          }
+          console.log(settings);
+          new Clap(container, clap_counter, settings);
       }
     </script>
   </body>
