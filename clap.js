@@ -87,12 +87,12 @@ class Clap{
     draw(elem){
         let ctx = elem.getContext('2d');
         try{
-            ctx.canvas.width = canvas_default.width;
-            ctx.canvas.height = canvas_default.height;
+            ctx.canvas.width = this.width;
+            ctx.canvas.height = this.height;
             ctx.globalCompositeOperation = 'screen';
             this.draw_levels(ctx);
             ctx.globalCompositeOperation = 'destination-over';
-            ctx.fillStyle = canvas_default.background;
+            ctx.fillStyle = this.background;
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         }catch(e){
             console.log(e);
@@ -111,14 +111,14 @@ class Clap{
         ctx.fillStyle=color.color_value;
         ctx.beginPath();
         let vertices = {
-            "nw" : [(color.in.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                0 + canvas_default.margin],
-            "ne" : [(color.in.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                0 + canvas_default.margin],
-            "se" : [(color.out.max*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                canvas_default.height - canvas_default.margin],
-            "sw" : [(color.out.min*(canvas_default.width-2*canvas_default.margin))/255 + canvas_default.margin,
-                canvas_default.height - canvas_default.margin]
+            "nw" : [(color.in.min*(this.width-2*this.margin))/255 + this.margin,
+                0 + this.margin],
+            "ne" : [(color.in.max*(this.width-2*this.margin))/255 + this.margin,
+                0 + this.margin],
+            "se" : [(color.out.max*(this.width-2*this.margin))/255 + this.margin,
+                this.height - this.margin],
+            "sw" : [(color.out.min*(this.width-2*this.margin))/255 + this.margin,
+                this.height - this.margin]
         }
         ctx.moveTo(vertices.nw[0], vertices.nw[1]);
         ctx.lineTo(vertices.ne[0], vertices.ne[1]);
