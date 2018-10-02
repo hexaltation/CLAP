@@ -1,3 +1,9 @@
+/**
+ *
+ * @description Class which when instanciated create the ColorLevelAdjusterProject controller
+ *  
+ * @class Clap
+ */
 class Clap{
 
     constructor(container, counter=1, defaults={}){
@@ -83,8 +89,11 @@ class Clap{
         try{
             ctx.canvas.width = canvas_default.width;
             ctx.canvas.height = canvas_default.height;
-            ctx.canvas.style.background = canvas_default.background;
+            ctx.globalCompositeOperation = 'screen';
             this.draw_levels(ctx);
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = canvas_default.background;
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         }catch(e){
             console.log(e);
         }
