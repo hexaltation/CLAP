@@ -9,6 +9,21 @@
     <div class='colorLevel'></div>
     <div class='colorLevel'></div>
     <div class='colorLevel'></div>
-    <script src="script.js"></script>
+    <script src="clap.js"></script>
+    <script>
+      let canvas_default ={
+          "width":130,
+          "height":130,
+          "background":"#BBBBBB",
+          "margin":11
+      }
+      let clap_counter = 0
+      let containers = document.getElementsByClassName('colorLevel');
+
+      for (let container of containers){
+          clap_counter ++;
+          new Clap(container, clap_counter, canvas_default);
+      }
+    </script>
   </body>
 </html>
