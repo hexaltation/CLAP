@@ -1,7 +1,8 @@
 # TODO in color level
 
 - Make obj colorLevel an attribute of each container in order to achieve enclosure of this information [X]
-- Set Gradient to displayed colors [X]
+- Set overlay in color display [X]
+- Set Gradient to displayed colors [ ]
 - Add Alpha (a in rgba) support [ ]
 - Add better mechanism for display and selection [ ]
 - Add better graphism for display and selection [ ]
