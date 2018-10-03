@@ -99,6 +99,10 @@ class Clap{
         this.container.onmousemove = (e)=>{
             if (this.clicked){ 
                 console.log(e.x, e.y);
+                this.active_layer.in.min=e.x;
+                console.log("#########",this.active_layer.min);
+                this.draw(this.slider);
+                console.log(this.active_layer.min);
             }
         }
     }
@@ -222,8 +226,15 @@ class Clap{
         for (let color in this.colorLevels){
             if (this.colorLevels[color]===active_color && this.colorLevels[color].active==false){
                 this.colorLevels[color].active = true;
+                this.active_layer = this.colorLevels[color];
+                console.log(this.active_layer);
+            }else if(this.colorLevels[color]===active_color && this.colorLevels[color].active==true){
+                this.colorLevels[color].active = false;
+                this.active_layer = null;
+                console.log(this.active_layer);
             }else{
                 this.colorLevels[color].active = false;
+                console.log(this.active_layer);
             }
         }
         this.showHideBoxes(this.selector);
