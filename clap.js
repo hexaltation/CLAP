@@ -19,7 +19,8 @@ class Clap{
                 },
                 "color_value":"#FF0000",
                 "active":true,
-                "label":"red"
+                "label":"red",
+                "mode":"screen"
             },
             "green":{
                 "in":{
@@ -32,7 +33,8 @@ class Clap{
                 },
                 "color_value":"#00FF00",
                 "active":true,
-                "label":"green"
+                "label":"green",
+                "mode":"screen"
             },
             "blue": {
                 "in":{
@@ -45,7 +47,22 @@ class Clap{
                 },
                 "color_value":"#0000FF",
                 "active":true,
-                "label":"blue"
+                "label":"blue",
+                "mode":"screen"
+            },
+            "alpha": {
+                "in":{
+                    "min":0,
+                    "max":255
+                },
+                "out":{
+                    "min":0,
+                    "max":255
+                },
+                "color_value":"#FFFFFF",
+                "active":true,
+                "label":"alpha",
+                "mode":"multiply"
             }
         }
 
@@ -89,7 +106,6 @@ class Clap{
         try{
             ctx.canvas.width = this.width;
             ctx.canvas.height = this.height;
-            ctx.globalCompositeOperation = 'screen';
             this.draw_levels(ctx);
             ctx.globalCompositeOperation = 'destination-over';
             ctx.fillStyle = this.background;
@@ -101,9 +117,11 @@ class Clap{
     
     draw_levels(ctx){
         for (let color in this.colorLevels){
-            if (this.colorLevels[color].active){
-                this.draw_level(ctx, this.colorLevels[color]);
+            if (!this.colorLevels[color].active){
+                continue
             }
+            ctx.globalCompositeOperation = this.colorLevels[color].mode;
+            this.draw_level(ctx, this.colorLevels[color]);
         }
     }
     
