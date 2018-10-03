@@ -18,7 +18,8 @@ class Clap{
                     "max":255
                 },
                 "color_value":"#FF0000",
-                "active":true,
+                "displayed":true,
+                "active":false,
                 "label":"red",
                 "mode":"screen"
             },
@@ -32,7 +33,8 @@ class Clap{
                     "max":255
                 },
                 "color_value":"#00FF00",
-                "active":true,
+                "displayed":true,
+                "active":false,
                 "label":"green",
                 "mode":"screen"
             },
@@ -46,7 +48,8 @@ class Clap{
                     "max":255
                 },
                 "color_value":"#0000FF",
-                "active":true,
+                "displayed":true,
+                "active":false,
                 "label":"blue",
                 "mode":"screen"
             },
@@ -60,7 +63,8 @@ class Clap{
                     "max":255
                 },
                 "color_value":"#FFFFFF",
-                "active":true,
+                "displayed":true,
+                "active":false,
                 "label":"alpha",
                 "mode":"multiply"
             }
@@ -75,12 +79,26 @@ class Clap{
             this.background="#AAAAAA";
             this.margin=10;
         }
+        this.clicked = false;
         this.container = container
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+counter
         this.container.appendChild(this.slider);
         this.draw(this.slider);
         this.showHideBoxes(this.container);
+        this.container.onmousedown = (e)=>{
+            this.clicked = true;
+            console.log(this.clicked)
+        };
+        this.container.onmouseup = (e)=>{
+            this.clicked = false;
+            console.log(this.clicked)
+        };
+        this.container.onmousemove = (e)=>{
+            if (this.clicked){ 
+                console.log(e.x, e.y);
+            }
+        }
     }
 
     initDefaults(defaults){
@@ -117,7 +135,7 @@ class Clap{
     
     draw_levels(ctx){
         for (let color in this.colorLevels){
-            if (!this.colorLevels[color].active){
+            if (!this.colorLevels[color].displayed){
                 continue
             }
             ctx.globalCompositeOperation = this.colorLevels[color].mode;
@@ -148,10 +166,7 @@ class Clap{
     }
     
     draw_vertices(ctx, color, vertices){
-        console.log(vertices);
         for (let vertex in vertices){
-            console.log(vertices[vertex], typeof(vertices[vertex]));
-            console.log('hello')
             this.draw_vertex(ctx, color, vertices[vertex]);
         }
     }
@@ -175,24 +190,26 @@ class Clap{
             box.type = "checkbox";
             box.value = this.colorLevels[color].label;
             box.id = "cb-"+this.colorLevels[color].label;
-            if (this.colorLevels[color].active){
-                box.checked=true;
+            if (this.colorLevels[color].displayed){
+                box.checked = true;
             }
             box.addEventListener('change', (evt)=>{
                 let current_canvas = container.getElementsByTagName('canvas')[0];
                 let current_color = evt.target.value;
                 if (evt.target.checked){
-                    this.colorLevels[current_color].active = true;
+                    this.colorLevels[current_color].displayed = true;
                 }else{
-                    this.colorLevels[current_color].active = false;
+                    this.colorLevels[current_color].displayed = false;
                 }
                 this.draw(current_canvas);
             });
             label.for = box.id;
             label.innerHTML = this.colorLevels[color].label;
+            if (this.colorLevels[color].active){
+                label.style.textDecoration = "underline";
+            }
             container.appendChild(box);
             container.appendChild(label);
         }
-    }
-    
+    }  
 }
