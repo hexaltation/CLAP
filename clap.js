@@ -84,6 +84,7 @@ class Clap{
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+counter
         this.container.appendChild(this.slider);
+        this.event = new Event('change');
         this.draw(this.slider);
         this.slider.origin = this.slider.getBoundingClientRect();
         this.selector = document.createElement("div");
@@ -134,6 +135,7 @@ class Clap{
             ctx.globalCompositeOperation = 'destination-over';
             ctx.fillStyle = this.background;
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            elem.dispatchEvent(this.event);
         }catch(e){
             console.log(e);
         }
@@ -220,6 +222,7 @@ class Clap{
             selector.appendChild(box);
             selector.appendChild(label);
         }
+        this.container.dispatchEvent(this.event);
     }
     
     selectActive(active_color){

@@ -4,7 +4,7 @@
 - Set overlay in color display [X]
 - Add Alpha (a in rgba) support [X]
 - Add on click + on move redraw in function of mouse position [ ]
-- Add Event on move to expose values of Color Level change [ ]
+- Add Event on move to expose values of Color Level change [X]
 - Set Gradient to displayed colors [ ]
 - Add original square limitation [ ]
 - Add better mechanism for display and selection [ ]
