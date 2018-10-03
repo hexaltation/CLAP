@@ -85,7 +85,9 @@ class Clap{
         this.slider.id = "color_level_"+counter
         this.container.appendChild(this.slider);
         this.draw(this.slider);
-        this.showHideBoxes(this.container);
+        this.selector = document.createElement("div");
+        this.container.appendChild(this.selector);
+        this.showHideBoxes(this.selector);
         this.container.onmousedown = (e)=>{
             this.clicked = true;
             console.log(this.clicked)
@@ -183,7 +185,8 @@ class Clap{
         ctx.stroke();
     }
     
-    showHideBoxes(container){
+    showHideBoxes(selector){
+        selector.innerHTML = "";
         for (let color in this.colorLevels){
             let box = document.createElement("input");
             let label = document.createElement("label");
@@ -194,22 +197,35 @@ class Clap{
                 box.checked = true;
             }
             box.addEventListener('change', (evt)=>{
-                let current_canvas = container.getElementsByTagName('canvas')[0];
                 let current_color = evt.target.value;
                 if (evt.target.checked){
                     this.colorLevels[current_color].displayed = true;
                 }else{
                     this.colorLevels[current_color].displayed = false;
                 }
-                this.draw(current_canvas);
+                this.draw(this.slider);
             });
             label.for = box.id;
             label.innerHTML = this.colorLevels[color].label;
             if (this.colorLevels[color].active){
                 label.style.textDecoration = "underline";
             }
-            container.appendChild(box);
-            container.appendChild(label);
+            label.ondblclick = (e)=>{
+                this.selectActive(this.colorLevels[color]);
+            }
+            selector.appendChild(box);
+            selector.appendChild(label);
         }
-    }  
+    }
+    
+    selectActive(active_color){
+        for (let color in this.colorLevels){
+            if (this.colorLevels[color]===active_color && this.colorLevels[color].active==false){
+                this.colorLevels[color].active = true;
+            }else{
+                this.colorLevels[color].active = false;
+            }
+        }
+        this.showHideBoxes(this.selector);
+    }
 }
