@@ -35,7 +35,6 @@
       for (let container of containers){
           clap_counter ++;
           let settings = {};
-          console.log(clap_counter);
           if (clap_counter==1){
             settings = canvas_default_1;
           }else if (clap_counter==2){
@@ -44,7 +43,6 @@
           else if (clap_counter==3){
             settings = canvas_default_3;
           }
-          console.log(settings);
           new Clap(container, clap_counter, settings);
       }
     </script>
