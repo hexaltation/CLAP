@@ -89,13 +89,13 @@ class Clap{
         this.selector = document.createElement("div");
         this.container.appendChild(this.selector);
         this.showHideBoxes(this.selector);
-        this.container.onmousedown = ()=>{
+        this.slider.onmousedown = ()=>{
             this.clicked = true;
         };
-        this.container.onmouseup = ()=>{
+        this.slider.onmouseup = ()=>{
             this.clicked = false;
         };
-        this.container.onmousemove = (e)=>{
+        this.slider.onmousemove = (e)=>{
             if (this.clicked){ 
                 console.log(e.clientX, e.clientY);
                 console.log("!!!!!!!!", this.slider.origin.x);
