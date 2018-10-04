@@ -70,6 +70,10 @@ class Clap{
             }
         }
 
+        if (!(container instanceof Element)){
+            throw new Error("First Parameter in Clap instanciation must be instance of Element");
+        }
+
         if (defaults != {}){
             this.initDefaults(defaults);
         }
