@@ -80,6 +80,7 @@ class Clap{
             this.margin=10;
         }
         this.clicked = false;
+        this.selectedVertice = null;
         this.container = container
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+counter
@@ -90,18 +91,21 @@ class Clap{
         this.selector = document.createElement("div");
         this.container.appendChild(this.selector);
         this.showHideBoxes(this.selector);
-        this.slider.onmousedown = ()=>{
+        this.slider.onmousedown = (evt)=>{
             this.clicked = true;
+            this.isVerticeSelected(evt);
         };
         this.slider.onmouseup = ()=>{
             this.clicked = false;
+            this.selectedVertice = null;
         };
-        this.slider.onmousemove = (e)=>{
-            if (this.clicked){ 
-                console.log(e.clientX, e.clientY);
+        this.slider.onmousemove = (evt)=>{
+            if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
+                console.log("@@@@@@@@@",this.selectedVertice)
+                console.log(evt.clientX, evt.clientY);
                 console.log("!!!!!!!!", this.slider.origin.x);
-                this.active_layer.in.min=Math.floor((e.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
-                console.log("?????????", (e.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
+                this.selectedVertice.obj[this.selectedVertice.key]=Math.floor((evt.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
+                console.log("?????????", (evt.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
                 console.log("#########",this.active_layer.in.min);
                 this.draw(this.slider);
             }
@@ -238,5 +242,28 @@ class Clap{
             }
         }
         this.showHideBoxes(this.selector);
+    }
+
+    isVerticeSelected(evt){
+        if (this.active_layer != null){
+            let vertices = [
+                {"obj":this.active_layer.in, "key":"min"}, 
+                {"obj":this.active_layer.in, "key":"max"}, 
+                {"obj":this.active_layer.out, "key":"min"}, 
+                {"obj":this.active_layer.out, "key":"max"}
+            ];
+            let position = [
+                [(this.active_layer.in.min*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [(this.active_layer.in.max*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [(this.active_layer.out.min*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y],
+                [(this.active_layer.out.max*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
+            ];
+            for (let i = 0; i < position.length; i++){
+                if ((position[i][0] - 5 < evt.clientX && evt.clientX < position[i][0] + 5) && (position[i][1] - 5 < evt.clientY && evt.clientY < position[i][1] + 5)){
+                    this.selectedVertice = vertices[i]
+                    break
+                }
+            }
+        }
     }
 }
