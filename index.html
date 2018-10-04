@@ -46,6 +46,9 @@
           }
           new Clap(container, clap_counter, settings);
       }
+      document.addEventListener('clap_change', (evt)=>{
+        console.log(evt.colorLevels);
+      })
     </script>
   </body>
 </html>

@@ -89,7 +89,8 @@ class Clap{
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+id;
         this.container.appendChild(this.slider);
-        this.event = new Event('change');
+        this.event = new Event('clap_change', {bubbles: true});
+        this.event.colorLevels = this.colorLevels;
         this.draw(this.slider);
         this.slider.origin = this.slider.getBoundingClientRect();
         this.selector = document.createElement("div");

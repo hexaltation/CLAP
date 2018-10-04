@@ -48,13 +48,15 @@ margin=10;
 
 ### Event Binding
 
-On change the Clap instance triggers a custom event in the DOM.  
+On change the Clap instance triggers a custom event *clap_change* which bubbles through the DOM.  
 You can subscribe to this event as follow :
 
 ```javascript
-elem.addEventListener('change');
+document.addEventListener('clap_change', (evt)=>{
+    console.log(evt.colorLevels);
+})
 ```
-You can get event.target.colorLevels to get the values.  
+You can get evt.colorLevels to get the values.  
 For now you can interract with rgba values (in and out).  
 The min value is 0.  
 The max value is 255.  
