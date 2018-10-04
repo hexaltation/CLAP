@@ -107,12 +107,14 @@ class Clap{
         this.slider.onmousemove = (evt)=>{
             if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
                 let value = Math.floor((evt.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
-                if (value < 0){
-                    this.selectedVertice.obj[this.selectedVertice.key]=0;
-                }else if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
+                if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["max"]-1;
                 }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj["min"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["min"]+1;
+                }else if (value < 0){
+                    this.selectedVertice.obj[this.selectedVertice.key]=0;
+                }else if (value > 255){
+                    this.selectedVertice.obj[this.selectedVertice.key]=255;
                 }else{
                     this.selectedVertice.obj[this.selectedVertice.key]=value;
                 }
