@@ -6,7 +6,7 @@
  */
 class Clap{
 
-    constructor(container, counter=1, defaults={}){
+    constructor(container, id="id", defaults={}){
         this.colorLevels = { 
             "red":  {
                 "in":{
@@ -83,7 +83,7 @@ class Clap{
         this.selectedVertice = null;
         this.container = container
         this.slider = document.createElement("canvas");
-        this.slider.id = "color_level_"+counter
+        this.slider.id = "color_level_"+id;
         this.container.appendChild(this.slider);
         this.event = new Event('change');
         this.draw(this.slider);
