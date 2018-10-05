@@ -7,15 +7,28 @@
 class Clap{
 
     constructor(container, id="id", defaults={}){
+        this.width = 120;
+        this.height = 120;
+        this.background = "#AAAAAA";
+        this.margin = 10;
+        this.min = 0;
+        this.max = 255;
+        this.lineWidth = 2;
+        this.handlerSize = 10;
+
+        if (defaults != {}){
+            this.initDefaults(defaults);
+        }
+
         this.colorLevels = { 
             "red":  {
                 "in":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "out":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "color_value":"#FF0000",
                 "displayed":true,
@@ -25,12 +38,12 @@ class Clap{
             },
             "green":{
                 "in":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "out":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "color_value":"#00FF00",
                 "displayed":true,
@@ -40,12 +53,12 @@ class Clap{
             },
             "blue": {
                 "in":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "out":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "color_value":"#0000FF",
                 "displayed":true,
@@ -55,12 +68,12 @@ class Clap{
             },
             "alpha": {
                 "in":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "out":{
-                    "min":0,
-                    "max":255
+                    "min":this.min,
+                    "max":this.max
                 },
                 "color_value":"#FFFFFF",
                 "displayed":true,
@@ -73,19 +86,8 @@ class Clap{
         if (!(container instanceof Element)){
             throw new Error("First Parameter in Clap instanciation must be instance of Element");
         }
-
-        if (defaults != {}){
-            this.initDefaults(defaults);
-        }
-        else{
-            this.width=120;
-            this.height=120;
-            this.background="#AAAAAA";
-            this.margin=10;
-        }
-        this.clicked = false;
-        this.selectedVertice = null;
         this.container = container
+
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+id;
         this.container.appendChild(this.slider);
@@ -96,6 +98,9 @@ class Clap{
         this.selector = document.createElement("div");
         this.container.appendChild(this.selector);
         this.showHideBoxes(this.selector);
+        this.clicked = false;
+        this.selectedVertice = null;
+
         this.slider.onmousedown = (evt)=>{
             this.clicked = true;
             this.isVerticeSelected(evt);
@@ -106,15 +111,15 @@ class Clap{
         };
         this.slider.onmousemove = (evt)=>{
             if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
-                let value = Math.floor((evt.clientX - this.slider.origin.x - this.margin)*255/(this.width-2*this.margin));
+                let value = Math.floor((evt.clientX-this.slider.origin.x-this.margin)*(this.max+Math.abs(this.min))/(this.width-2*this.margin)-Math.abs(this.min));
                 if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["max"]-1;
                 }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj["min"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["min"]+1;
-                }else if (value < 0){
-                    this.selectedVertice.obj[this.selectedVertice.key]=0;
-                }else if (value > 255){
-                    this.selectedVertice.obj[this.selectedVertice.key]=255;
+                }else if (value < this.min){
+                    this.selectedVertice.obj[this.selectedVertice.key]=this.min;
+                }else if (value > this.max){
+                    this.selectedVertice.obj[this.selectedVertice.key]=this.max;
                 }else{
                     this.selectedVertice.obj[this.selectedVertice.key]=value;
                 }
@@ -138,6 +143,18 @@ class Clap{
         }
         if (defaults.hasOwnProperty('margin')){
             this.margin = defaults.margin;
+        }
+        if (defaults.hasOwnProperty('min')){
+            this.min = defaults.min;
+        }
+        if (defaults.hasOwnProperty('max')){
+            this.max = defaults.max;
+        }
+        if (defaults.hasOwnProperty('lineWidth')){
+            this.lineWidth = defaults.lineWidth;
+        }
+        if (defaults.hasOwnProperty('handlerSize')){
+            this.handlerSize = defaults.handlerSize;
         }
     }
 
@@ -170,13 +187,13 @@ class Clap{
         ctx.fillStyle=color.color_value;
         ctx.beginPath();
         let vertices = {
-            "nw" : [(color.in.min*(this.width-2*this.margin))/255 + this.margin,
+            "nw" : [((Math.abs(this.min)+color.in.min)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
                 0 + this.margin],
-            "ne" : [(color.in.max*(this.width-2*this.margin))/255 + this.margin,
+            "ne" : [((Math.abs(this.min)+color.in.max)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
                 0 + this.margin],
-            "se" : [(color.out.max*(this.width-2*this.margin))/255 + this.margin,
+            "se" : [((Math.abs(this.min)+color.out.max)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
                 this.height - this.margin],
-            "sw" : [(color.out.min*(this.width-2*this.margin))/255 + this.margin,
+            "sw" : [((Math.abs(this.min)+color.out.min)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
                 this.height - this.margin]
         }
         ctx.moveTo(vertices.nw[0], vertices.nw[1]);
@@ -195,13 +212,13 @@ class Clap{
     }
     
     draw_vertex(ctx, color, vertex){
-        ctx.lineWidth = 2;
+        ctx.lineWidth = this.lineWidth;
         ctx.strokeStyle = color;
         ctx.beginPath();
-        ctx.moveTo(vertex[0]-5, vertex[1]-5);
-        ctx.lineTo(vertex[0]+5, vertex[1]-5);
-        ctx.lineTo(vertex[0]+5, vertex[1]+5);
-        ctx.lineTo(vertex[0]-5, vertex[1]+5);
+        ctx.moveTo(vertex[0]-this.handlerSize/2, vertex[1]-this.handlerSize/2);
+        ctx.lineTo(vertex[0]+this.handlerSize/2, vertex[1]-this.handlerSize/2);
+        ctx.lineTo(vertex[0]+this.handlerSize/2, vertex[1]+this.handlerSize/2);
+        ctx.lineTo(vertex[0]-this.handlerSize/2, vertex[1]+this.handlerSize/2);
         ctx.closePath();
         ctx.stroke();
     }
@@ -264,13 +281,13 @@ class Clap{
                 {"obj":this.active_layer.out, "key":"max"}
             ];
             let position = [
-                [(this.active_layer.in.min*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
-                [(this.active_layer.in.max*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
-                [(this.active_layer.out.min*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y],
-                [(this.active_layer.out.max*(this.width-2*this.margin))/255 + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
+                [((Math.abs(this.min)+this.active_layer.in.min)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [((Math.abs(this.min)+this.active_layer.in.max)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [((Math.abs(this.min)+this.active_layer.out.min)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y],
+                [((Math.abs(this.min)+this.active_layer.out.max)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
             ];
             for (let i = 0; i < position.length; i++){
-                if ((position[i][0] - 5 < evt.clientX && evt.clientX < position[i][0] + 5) && (position[i][1] - 5 < evt.clientY && evt.clientY < position[i][1] + 5)){
+                if ((position[i][0] - this.handlerSize/2 < evt.clientX && evt.clientX < position[i][0] + this.handlerSize/2) && (position[i][1] - this.handlerSize/2 < evt.clientY && evt.clientY < position[i][1] + this.handlerSize/2)){
                     this.selectedVertice = vertices[i]
                     break
                 }
