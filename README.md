@@ -39,12 +39,20 @@ width=120;
 height=120;
 background="#AAAAAA";
 margin=10;
+min=0;
+max=255;
+lineWidth=2;
+handlerSize=10;
 ```
 
-**width** *Int*: width of the containing canvas.  
-**height** *Int*: height of the containing canvas.  
-**background** *String*: Color in HEX format.  
-**margin** *Int*: Value in pixel of the margin around sliders.  
+**width** *Int*: width of the containing canvas. (default 120)  
+**height** *Int*: height of the containing canvas. (default 120)  
+**background** *String*: Color in HEX format. (default #AAAAAA)  
+**margin** *Int*: Value in pixel of the margin around sliders. (default 10)  
+**min** *Int*: Minimun value in mapping scale. (default 0)  
+**max** *Int*: Maximum value in mapping scale. (default 255)  
+**lineWidth** *Int*: Line Width in pixel of handlers shape. (default 2)  
+**handlerSize** *Int*: Size in pixel of handlers' sides. (default 10)   
 
 ### Event Binding
 
@@ -58,8 +66,8 @@ document.addEventListener('clap_change', (evt)=>{
 ```
 You can get evt.colorLevels to get the values.  
 For now you can interract with rgba values (in and out).  
-The min value is 0.  
-The max value is 255.  
+Default min value is 0.  
+Default max value is 255.  
 
 ## Visual Interaction
 
