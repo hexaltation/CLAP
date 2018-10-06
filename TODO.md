@@ -5,6 +5,7 @@
 - Add Alpha (a in rgba) support [X]
 - Add on click + on move redraw in function of mouse position [X]
 - Add Event on move to expose values of Color Level change [X]
+- Add type checking to settings [ ]
 - Set Gradient to displayed colors [ ]
 - Add original square limitation [ ]
 - Add better mechanism for display and selection [ ]

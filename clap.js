@@ -6,7 +6,7 @@
  */
 class Clap{
 
-    constructor(container, id="id", defaults={}){
+    constructor(container, id="id", settings={}){
         this.width = 120;
         this.height = 120;
         this.background = "#AAAAAA";
@@ -16,8 +16,11 @@ class Clap{
         this.lineWidth = 2;
         this.handlerSize = 10;
 
-        if (defaults != {}){
-            this.initDefaults(defaults);
+        if (settings != {}){
+            this.initSettings(settings);
+        }
+        if(this.min>=this.max){
+            throw new Error("min must be strictly inferior to max");
         }
 
         this.colorLevels = { 
@@ -111,7 +114,7 @@ class Clap{
         };
         this.slider.onmousemove = (evt)=>{
             if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
-                let value = Math.floor((evt.clientX-this.slider.origin.x-this.margin)*(this.max+Math.abs(this.min))/(this.width-2*this.margin)-Math.abs(this.min));
+                let value = Math.floor((evt.clientX-this.slider.origin.x-this.margin)*(Math.abs(this.max-this.min))/(this.width-2*this.margin)+this.min);
                 if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["max"]-1;
                 }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj["min"]){
@@ -128,33 +131,33 @@ class Clap{
         }
     }
 
-    initDefaults(defaults){
-        if (typeof(defaults)!='object'){
+    initSettings(settings){
+        if (typeof(settings)!='object'){
             throw new Error('Default is not an object');
         }
-        if (defaults.hasOwnProperty('width')){
-            this.width = defaults.width;
+        if (settings.hasOwnProperty('width')){
+            this.width = settings.width;
         }
-        if (defaults.hasOwnProperty('height')){
-            this.height = defaults.height;
+        if (settings.hasOwnProperty('height')){
+            this.height = settings.height;
         }
-        if (defaults.hasOwnProperty('background')){
-            this.background = defaults.background;
+        if (settings.hasOwnProperty('background')){
+            this.background = settings.background;
         }
-        if (defaults.hasOwnProperty('margin')){
-            this.margin = defaults.margin;
+        if (settings.hasOwnProperty('margin')){
+            this.margin = settings.margin;
         }
-        if (defaults.hasOwnProperty('min')){
-            this.min = defaults.min;
+        if (settings.hasOwnProperty('min')){
+            this.min = settings.min;
         }
-        if (defaults.hasOwnProperty('max')){
-            this.max = defaults.max;
+        if (settings.hasOwnProperty('max')){
+            this.max = settings.max;
         }
-        if (defaults.hasOwnProperty('lineWidth')){
-            this.lineWidth = defaults.lineWidth;
+        if (settings.hasOwnProperty('lineWidth')){
+            this.lineWidth = settings.lineWidth;
         }
-        if (defaults.hasOwnProperty('handlerSize')){
-            this.handlerSize = defaults.handlerSize;
+        if (settings.hasOwnProperty('handlerSize')){
+            this.handlerSize = settings.handlerSize;
         }
     }
 
@@ -187,13 +190,13 @@ class Clap{
         ctx.fillStyle=color.color_value;
         ctx.beginPath();
         let vertices = {
-            "nw" : [((Math.abs(this.min)+color.in.min)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
+            "nw" : [((color.in.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 0 + this.margin],
-            "ne" : [((Math.abs(this.min)+color.in.max)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
+            "ne" : [((color.in.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 0 + this.margin],
-            "se" : [((Math.abs(this.min)+color.out.max)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
+            "se" : [((color.out.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 this.height - this.margin],
-            "sw" : [((Math.abs(this.min)+color.out.min)*(this.width-2*this.margin))/(Math.abs(this.min)+Math.abs(this.max)) + this.margin,
+            "sw" : [((color.out.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 this.height - this.margin]
         }
         ctx.moveTo(vertices.nw[0], vertices.nw[1]);
@@ -281,10 +284,10 @@ class Clap{
                 {"obj":this.active_layer.out, "key":"max"}
             ];
             let position = [
-                [((Math.abs(this.min)+this.active_layer.in.min)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
-                [((Math.abs(this.min)+this.active_layer.in.max)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
-                [((Math.abs(this.min)+this.active_layer.out.min)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y],
-                [((Math.abs(this.min)+this.active_layer.out.max)*(this.width-2*this.margin))/(Math.abs(this.min)+this.max) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
+                [((this.active_layer.in.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [((this.active_layer.in.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin + this.slider.origin.x, 0 + this.margin + this.slider.origin.y],
+                [((this.active_layer.out.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y],
+                [((this.active_layer.out.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
             ];
             for (let i = 0; i < position.length; i++){
                 if ((position[i][0] - this.handlerSize/2 < evt.clientX && evt.clientX < position[i][0] + this.handlerSize/2) && (position[i][1] - this.handlerSize/2 < evt.clientY && evt.clientY < position[i][1] + this.handlerSize/2)){
