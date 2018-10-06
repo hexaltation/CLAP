@@ -52,7 +52,9 @@ handlerSize=10;
 **min** *Int*: Minimun value in mapping scale. (default 0)  
 **max** *Int*: Maximum value in mapping scale. (default 255)  
 **lineWidth** *Int*: Line Width in pixel of handlers shape. (default 2)  
-**handlerSize** *Int*: Size in pixel of handlers' sides. (default 10)   
+**handlerSize** *Int*: Size in pixel of handlers' sides. (default 10) 
+
+IMPORTANT : min have to be strictly inferior than max.  
 
 ### Event Binding
 
