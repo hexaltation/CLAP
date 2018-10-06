@@ -10,6 +10,13 @@
     <div class='colorLevel'></div>
     <div class='colorLevel'></div>
     <div class='colorLevel'></div>
+    <div id="display">
+    <div id="active_name"></div>
+    <div id="red"></div>
+    <div id="green"></div>
+    <div id="blue"></div>
+    <div id="alpha"></div>
+    </div>
     <script src="clap.js"></script>
     <script>
       let canvas_default_1 ={
@@ -52,6 +59,16 @@
       }
       document.addEventListener('clap_change', (evt)=>{
         console.log(evt.colorLevels);
+        console.log(evt.srcElement.id);
+        document.getElementById("active_name").textContent="Active : "+evt.srcElement.id;
+        let red = "red in min="+evt.colorLevels.red.in.min+"; red in max="+evt.colorLevels.red.in.max+"; red in min="+evt.colorLevels.red.out.min+"; red out max="+evt.colorLevels.red.out.max;
+        document.getElementById("red").textContent=red;
+        let green = "green in min="+evt.colorLevels.green.in.min+"; green in max="+evt.colorLevels.green.in.max+"; green in min="+evt.colorLevels.green.out.min+"; green out max="+evt.colorLevels.green.out.max;
+        document.getElementById("green").textContent=green;
+        let blue = "blue in min="+evt.colorLevels.blue.in.min+"; blue in max="+evt.colorLevels.blue.in.max+"; blue in min="+evt.colorLevels.blue.out.min+"; blue out max="+evt.colorLevels.blue.out.max;
+        document.getElementById("blue").textContent=blue;
+        let alpha = "alpha in min="+evt.colorLevels.alpha.in.min+"; alpha in max="+evt.colorLevels.alpha.in.max+"; alpha in min="+evt.colorLevels.alpha.out.min+"; alpha out max="+evt.colorLevels.alpha.out.max;
+        document.getElementById("alpha").textContent=alpha;
       })
     </script>
   </body>
