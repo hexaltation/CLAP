@@ -114,7 +114,7 @@ class Clap{
         };
         this.slider.onmousemove = (evt)=>{
             if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
-                let value = Math.floor((evt.clientX-this.slider.origin.x-this.margin)*(Math.abs(this.max-this.min))/(this.width-2*this.margin)+this.min);
+                let value = Math.floor((evt.pageX-this.slider.origin.x-this.margin)*(Math.abs(this.max-this.min))/(this.width-2*this.margin)+this.min);
                 if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["max"]-1;
                 }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj["min"]){
@@ -290,7 +290,7 @@ class Clap{
                 [((this.active_layer.out.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin + this.slider.origin.x, this.height - this.margin + this.slider.origin.y]
             ];
             for (let i = 0; i < position.length; i++){
-                if ((position[i][0] - this.handlerSize/2 < evt.clientX && evt.clientX < position[i][0] + this.handlerSize/2) && (position[i][1] - this.handlerSize/2 < evt.clientY && evt.clientY < position[i][1] + this.handlerSize/2)){
+                if ((position[i][0] - this.handlerSize/2 < evt.pageX && evt.pageX < position[i][0] + this.handlerSize/2) && (position[i][1] - this.handlerSize/2 < evt.pageY && evt.pageY < position[i][1] + this.handlerSize/2)){
                     this.selectedVertice = vertices[i]
                     break
                 }
