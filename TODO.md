@@ -10,3 +10,5 @@
 - Add original square limitation [ ]
 - Add better mechanism for display and selection [ ]
 - Add better graphism for display and selection [ ]
+- Add minification process [ ]
+- Add ECMA 5 strict translation [ ]
