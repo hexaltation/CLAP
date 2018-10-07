@@ -17,7 +17,7 @@ class Clap{
         this.handlerSize = 10;
         this.boundary = false;
         this.boundaryColor = "#FFFFFF";
-        this.customisable = ["width", "height", "background", "margin", "min", "max","linewidth","handlerSize","boundary","boundaryColor"]
+        this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"},{"key":"linewidth","type":"int"},{"key":"handlerSize","type":"int"},{"key":"boundary","type":"boolean"},{"key":"boundaryColor","type":"hexString"}]
 
         if (settings != {}){
             this.initSettings(settings);
@@ -139,10 +139,27 @@ class Clap{
             throw new Error('settings must be an object');
         }
         this.customisable.forEach((setting)=>{
-            if (settings.hasOwnProperty(setting)){
-                this[setting] = settings[setting];
+            if (settings.hasOwnProperty(setting.key)){
+                this.typeChecking(settings[setting.key], setting);
+                this[setting.key] = settings[setting.key];
             }
         })
+    }
+
+    typeChecking(value, setting){
+        if (typeof(value)!==setting.type && (setting.type !== "hexString" && setting.type !== "int")){
+            throw new TypeError(setting.key+" must be of type "+setting.type+". Here it's "+"'"+typeof(value)+"'.");
+        }
+        if (typeof(value)==='number' && setting.type === 'int'){
+            if (!Number.isInteger(value)){
+                throw new TypeError(setting.key+" must be of type "+setting.type+". Here it's a vulgar 'number'.");
+            }
+        }
+        if (typeof(value)==='string' && setting.type === 'hexString'){
+            if (!/^#[0-9A-F]{6}$/i.test(value)){
+                throw new TypeError(setting.key+" must be of type "+setting.type+". Here it's a vulgar 'string'.");
+            }
+        }
     }
 
     draw(elem){
