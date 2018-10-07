@@ -17,6 +17,7 @@ class Clap{
         this.handlerSize = 10;
         this.boundary = false;
         this.boundaryColor = "#FFFFFF";
+        this.customisable = ["width", "height", "background", "margin", "min", "max","linewidth","handlerSize","boundary","boundaryColor"]
 
         if (settings != {}){
             this.initSettings(settings);
@@ -135,38 +136,13 @@ class Clap{
 
     initSettings(settings){
         if (typeof(settings)!='object'){
-            throw new Error('Default is not an object');
+            throw new Error('settings must be an object');
         }
-        if (settings.hasOwnProperty('width')){
-            this.width = settings.width;
-        }
-        if (settings.hasOwnProperty('height')){
-            this.height = settings.height;
-        }
-        if (settings.hasOwnProperty('background')){
-            this.background = settings.background;
-        }
-        if (settings.hasOwnProperty('margin')){
-            this.margin = settings.margin;
-        }
-        if (settings.hasOwnProperty('min')){
-            this.min = settings.min;
-        }
-        if (settings.hasOwnProperty('max')){
-            this.max = settings.max;
-        }
-        if (settings.hasOwnProperty('lineWidth')){
-            this.lineWidth = settings.lineWidth;
-        }
-        if (settings.hasOwnProperty('handlerSize')){
-            this.handlerSize = settings.handlerSize;
-        }
-        if (settings.hasOwnProperty('boundary')){
-            this.boundary = settings.boundary;
-        }
-        if (settings.hasOwnProperty('boundaryColor')){
-            this.boundaryColor = settings.boundaryColor;
-        }
+        this.customisable.forEach((setting)=>{
+            if (settings.hasOwnProperty(setting)){
+                this[setting] = settings[setting];
+            }
+        })
     }
 
     draw(elem){
