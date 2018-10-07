@@ -43,6 +43,8 @@ min=0;
 max=255;
 lineWidth=2;
 handlerSize=10;
+boundary=false;
+boundaryColor="#FFFFFF";
 ```
 
 **width** *Int*: width of the containing canvas. (default 120)  
@@ -53,6 +55,8 @@ handlerSize=10;
 **max** *Int*: Maximum value in mapping scale. (default 255)  
 **lineWidth** *Int*: Line Width in pixel of handlers shape. (default 2)  
 **handlerSize** *Int*: Size in pixel of handlers' sides. (default 10) 
+**boundary** *Boolean*: Switch display/hide of handlers limits (default false)  
+**boundaryColor** *String*: Color in HEX format. (default #FFFFFF)  
 
 IMPORTANT : min have to be strictly inferior than max.  
 

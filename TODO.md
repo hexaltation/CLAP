@@ -7,7 +7,7 @@
 - Add Event on move to expose values of Color Level change [X]
 - Add type checking to settings [ ]
 - Set Gradient to displayed colors [ ]
-- Add original square limitation [ ]
+- Add original square limitation [X]
 - Add better mechanism for display and selection [ ]
 - Add better graphism for display and selection [ ]
 - Add minification process [ ]

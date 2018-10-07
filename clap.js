@@ -15,6 +15,8 @@ class Clap{
         this.max = 255;
         this.lineWidth = 2;
         this.handlerSize = 10;
+        this.boundary = false;
+        this.boundaryColor = "#FFFFFF";
 
         if (settings != {}){
             this.initSettings(settings);
@@ -159,6 +161,12 @@ class Clap{
         if (settings.hasOwnProperty('handlerSize')){
             this.handlerSize = settings.handlerSize;
         }
+        if (settings.hasOwnProperty('boundary')){
+            this.boundary = settings.boundary;
+        }
+        if (settings.hasOwnProperty('boundaryColor')){
+            this.boundaryColor = settings.boundaryColor;
+        }
     }
 
     draw(elem){
@@ -168,6 +176,10 @@ class Clap{
             ctx.canvas.height = this.height;
             this.draw_levels(ctx);
             ctx.globalCompositeOperation = 'destination-over';
+            if (this.boundary){
+                ctx.strokeStyle = this.boundaryColor;
+                ctx.strokeRect(this.margin, this.margin, this.width-2*this.margin, this.height-2*this.margin);
+            }
             ctx.fillStyle = this.background;
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             elem.dispatchEvent(this.event);
