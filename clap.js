@@ -261,13 +261,13 @@ class Clap{
             if (this.colorLevels[color].in.min < inmin || inmin===undefined){
                 inmin = this.colorLevels[color].in.min;
             }
-            if (this.colorLevels[color].in.max < inmax || inmax===undefined){
+            if (this.colorLevels[color].in.max > inmax || inmax===undefined){
                 inmax = this.colorLevels[color].in.max;
             }
             if (this.colorLevels[color].out.min < outmin || outmin===undefined){
                 outmin = this.colorLevels[color].out.min;
             }
-            if (this.colorLevels[color].out.max < outmax || outmax===undefined){
+            if (this.colorLevels[color].out.max > outmax || outmax===undefined){
                 outmax = this.colorLevels[color].out.max;
             }
         }
