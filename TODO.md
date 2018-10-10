@@ -6,7 +6,7 @@
 - Add on click + on move redraw in function of mouse position [X]
 - Add Event on move to expose values of Color Level change [X]
 - Add type checking to settings [X]
-- Set Gradient to displayed colors [ ]
+- Set Gradient to displayed colors [X]
 - Add original square limitation [X]
 - Add better mechanism for display and selection [ ]
 - Add better graphism for display and selection [ ]

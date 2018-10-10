@@ -45,6 +45,7 @@ lineWidth=2;
 handlerSize=10;
 boundary=false;
 boundaryColor="#FFFFFF";
+gradient=false;
 ```
 
 **width** *Int*: width of the containing canvas. (default 120)  
@@ -56,7 +57,8 @@ boundaryColor="#FFFFFF";
 **lineWidth** *Int*: Line Width in pixel of handlers shape. (default 2)  
 **handlerSize** *Int*: Size in pixel of handlers' sides. (default 10) 
 **boundary** *Boolean*: Switch display/hide of handlers limits (default false)  
-**boundaryColor** *String*: Color in HEX format. (default #FFFFFF)  
+**boundaryColor** *String*: Color in HEX format. (default #FFFFFF) 
+**gradient** *Boolean*: Switch display/hide of gradient over color sliders (default false) 
 
 IMPORTANT : min have to be strictly inferior than max.  
 

@@ -17,7 +17,8 @@ class Clap{
         this.handlerSize = 10;
         this.boundary = false;
         this.boundaryColor = "#FFFFFF";
-        this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"},{"key":"linewidth","type":"int"},{"key":"handlerSize","type":"int"},{"key":"boundary","type":"boolean"},{"key":"boundaryColor","type":"hexString"}]
+        this.gradient = false;
+        this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"}, {"key":"linewidth","type":"int"}, {"key":"handlerSize","type":"int"}, {"key":"boundary","type":"boolean"}, {"key":"boundaryColor","type":"hexString"}, {"key":"gradient","type":"boolean"}]
 
         if (settings != {}){
             this.initSettings(settings);
@@ -168,6 +169,10 @@ class Clap{
             ctx.canvas.width = this.width;
             ctx.canvas.height = this.height;
             this.draw_levels(ctx);
+            if(this.gradient){
+                ctx.globalCompositeOperation = 'multiply';
+                this.draw_gradient(ctx);
+            }
             ctx.globalCompositeOperation = 'destination-over';
             if (this.boundary){
                 ctx.strokeStyle = this.boundaryColor;
@@ -193,15 +198,21 @@ class Clap{
     
     draw_level(ctx, color){
         ctx.fillStyle=color.color_value;
+        let points = [color.in.min,color.in.max,color.out.max,color.out.min]
+        let vertices = this.draw_from_points(ctx, points);
+        this.draw_vertices(ctx, color.color_value, vertices);
+    }
+
+    draw_from_points(ctx, points){
         ctx.beginPath();
         let vertices = {
-            "nw" : [((color.in.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
+            "nw" : [((points[0]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 0 + this.margin],
-            "ne" : [((color.in.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
+            "ne" : [((points[1]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 0 + this.margin],
-            "se" : [((color.out.max-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
+            "se" : [((points[2]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 this.height - this.margin],
-            "sw" : [((color.out.min-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
+            "sw" : [((points[3]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 this.height - this.margin]
         }
         ctx.moveTo(vertices.nw[0], vertices.nw[1]);
@@ -210,7 +221,7 @@ class Clap{
         ctx.lineTo(vertices.sw[0], vertices.sw[1]);
         ctx.closePath();
         ctx.fill();
-        this.draw_vertices(ctx, color.color_value, vertices);
+        return vertices;
     }
     
     draw_vertices(ctx, color, vertices){
@@ -229,6 +240,38 @@ class Clap{
         ctx.lineTo(vertex[0]-this.handlerSize/2, vertex[1]+this.handlerSize/2);
         ctx.closePath();
         ctx.stroke();
+    }
+
+    draw_gradient(ctx){
+        let grd=ctx.createLinearGradient(0,0,this.width,0);
+        grd.addColorStop(0,"black");
+        grd.addColorStop(1,"white");
+        ctx.fillStyle=grd;
+        let points = this.get_externals_vertices();
+        console.log(points)
+        this.draw_from_points(ctx, points);
+    }
+
+    get_externals_vertices(){
+        let inmin;
+        let inmax;
+        let outmin;
+        let outmax;
+        for (let color in this.colorLevels){
+            if (this.colorLevels[color].in.min < inmin || inmin===undefined){
+                inmin = this.colorLevels[color].in.min;
+            }
+            if (this.colorLevels[color].in.max < inmax || inmax===undefined){
+                inmax = this.colorLevels[color].in.max;
+            }
+            if (this.colorLevels[color].out.min < outmin || outmin===undefined){
+                outmin = this.colorLevels[color].out.min;
+            }
+            if (this.colorLevels[color].out.max < outmax || outmax===undefined){
+                outmax = this.colorLevels[color].out.max;
+            }
+        }
+        return [inmin, inmax, outmax, outmin];
     }
     
     showHideBoxes(selector){
