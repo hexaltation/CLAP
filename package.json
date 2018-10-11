@@ -1,0 +1,29 @@
+{
+  "name": "colorlevel",
+  "version": "0.1.5",
+  "description": "A front JS Selector for rgba color level manipulation",
+  "main": "clap.js",
+  "dependencies": {
+    "grunt": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexaltation/CLAP.git"
+  },
+  "keywords": [
+    "javascript",
+    "vanilla",
+    "canvas",
+    "ffmpeg"
+  ],
+  "author": "hexaltation",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/hexaltation/CLAP/issues"
+  },
+  "homepage": "https://github.com/hexaltation/CLAP#readme"
+}
