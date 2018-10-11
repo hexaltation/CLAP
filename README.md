@@ -86,4 +86,13 @@ Click on the handlers drawn on vertices and move the mouse while holding mouse d
 
 ## How contibute
 
+As this project uses dependencies you need to have npm installed.  
+You can install it by installing Node on your computer.  
+You can find more info about this subject here:  
+https://nodejs.org/en/
+
+To install dependencies run
+```bash
+npm install
+```
 You can read TODO.md to see what have to be done and contribute.  
