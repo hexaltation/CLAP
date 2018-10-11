@@ -5,14 +5,14 @@
   "main": "clap.js",
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
-    "babel-cli": "^6.26.0",
     "grunt": "^1.0.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"babel ./src/clap.js --out-file ./build/clap.min.js --presets=@babel/env"
   },
   "repository": {
     "type": "git",
