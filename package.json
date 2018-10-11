@@ -3,10 +3,11 @@
   "version": "0.1.5",
   "description": "A front JS Selector for rgba color level manipulation",
   "main": "clap.js",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
     "grunt": "^1.0.3"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
