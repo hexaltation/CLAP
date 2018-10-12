@@ -1,5 +1,5 @@
 {
-  "name": "colorlevel",
+  "name": "clap",
   "version": "0.1.5",
   "description": "A front JS Selector for rgba color level manipulation",
   "main": "clap.js",
@@ -8,11 +8,15 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "grunt": "^1.0.3"
+    "grunt": "^1.0.3",
+    "grunt-cli": "^1.3.1",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-contrib-uglify": "^4.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"babel ./src/clap.js --out-file ./build/clap.min.js --presets=@babel/env"
+    "build": "babel ./src/clap.js --out-file ./build/clap.es2015.js --presets=@babel/env"
   },
   "repository": {
     "type": "git",
