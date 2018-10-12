@@ -4,8 +4,9 @@
 # pre-commit hook to run grunt tasks everytime a css and js file is changed
 # Inspired by https://gist.github.com/vinitkumar/pre-commit
 
-cssFile="clap.min.css"
-jsFile="clap.min.js"
+cssFile="build/clap.min.css"
+babelFile="bild/clap.es2015.js"
+jsFile="build/clap.min.js"
 
 for file in $( exec git diff-index --cached --name-only HEAD )
 do
@@ -19,12 +20,15 @@ done
 
 if [[ $containsCssFile ]]; then
     echo "Generating $cssFile"
-    grunt css
+    npx grunt css
     git add $cssFile
 fi
 
 if [[ $containsJsFile ]]; then
+  echo "babeling js file"
+  npm run build
   echo "Concating and minifying js files.Hold tight"
-  grunt js
+  npx grunt js
   git add $jsFile
+  rm $babelFile
 fi
