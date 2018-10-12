@@ -1,6 +1,6 @@
 /**
  *
- * @description Class which when instanciated create the ColorLevelAdjusterProject controller
+ * @description Class which when instanciated creates the ColorLevelAdjusterProject controller
  *  
  * @class Clap
  */
