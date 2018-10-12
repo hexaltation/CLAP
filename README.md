@@ -86,13 +86,19 @@ Click on the handlers drawn on vertices and move the mouse while holding mouse d
 
 ## How contibute
 
+Please check that your git version is above or equal to 2.9.  
+```bash
+git --version
+```
 As this project uses dependencies you need to have npm installed.  
 You can install it by installing Node on your computer.  
 You can find more info about this subject here:  
 https://nodejs.org/en/
 
-To install dependencies run
+To setup the project, put yourself in repository root and run :
 ```bash
-npm install
+./setup.sh
 ```
+It will install the node modules and setup the pre-commit hook.  
+
 You can read TODO.md to see what have to be done and contribute.  
