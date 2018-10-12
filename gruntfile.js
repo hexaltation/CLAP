@@ -18,8 +18,9 @@ module.exports = function(grunt) {
                     jQuery: true,
                     console: true,
                     module: true,
-                    document: true
-                }
+                    document: true,
+                },
+                esversion: 6
             }
         },
         cssmin: {
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    grunt.registerTask('js', ['jshint', 'uglify']);
-    grunt.registerTask('css', ['minify']);
-}
+    grunt.registerTask('js', ['uglify']);
+    grunt.registerTask('css', ['cssmin']);
+    grunt.registerTask('lint', ['jshint']);
+};

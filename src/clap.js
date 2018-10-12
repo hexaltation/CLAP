@@ -1,6 +1,6 @@
 /**
  *
- * @description Class which when instanciated creates the ColorLevelAdjusterProject controller
+ * @description Class which when instanciated creates the ColorLevelAdjusterProject controller.
  *  
  * @class Clap
  */
@@ -18,7 +18,7 @@ class Clap{
         this.boundary = false;
         this.boundaryColor = "#FFFFFF";
         this.gradient = false;
-        this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"}, {"key":"linewidth","type":"int"}, {"key":"handlerSize","type":"int"}, {"key":"boundary","type":"boolean"}, {"key":"boundaryColor","type":"hexString"}, {"key":"gradient","type":"boolean"}]
+        this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"}, {"key":"linewidth","type":"int"}, {"key":"handlerSize","type":"int"}, {"key":"boundary","type":"boolean"}, {"key":"boundaryColor","type":"hexString"}, {"key":"gradient","type":"boolean"}];
 
         if (settings != {}){
             this.initSettings(settings);
@@ -88,12 +88,12 @@ class Clap{
                 "label":"alpha",
                 "mode":"multiply"
             }
-        }
+        };
 
         if (!(container instanceof Element)){
             throw new Error("First Parameter in Clap instanciation must be instance of Element");
         }
-        this.container = container
+        this.container = container;
 
         this.slider = document.createElement("canvas");
         this.slider.id = "color_level_"+id;
@@ -119,10 +119,10 @@ class Clap{
         this.slider.onmousemove = (evt)=>{
             if (this.clicked && this.active_layer!=null && this.selectedVertice!=null){ 
                 let value = Math.floor((evt.pageX-this.slider.origin.x-this.margin)*(Math.abs(this.max-this.min))/(this.width-2*this.margin)+this.min);
-                if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj["max"]){
-                    this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["max"]-1;
-                }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj["min"]){
-                    this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj["min"]+1;
+                if(this.selectedVertice.key==="min" && value >= this.selectedVertice.obj.max){
+                    this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj.max-1;
+                }else if(this.selectedVertice.key==="max" && value <= this.selectedVertice.obj.min){
+                    this.selectedVertice.obj[this.selectedVertice.key]=this.selectedVertice.obj.min+1;
                 }else if (value < this.min){
                     this.selectedVertice.obj[this.selectedVertice.key]=this.min;
                 }else if (value > this.max){
@@ -132,7 +132,7 @@ class Clap{
                 }
                 this.draw(this.slider);
             }
-        }
+        };
     }
 
     initSettings(settings){
@@ -144,7 +144,7 @@ class Clap{
                 this.typeChecking(settings[setting.key], setting);
                 this[setting.key] = settings[setting.key];
             }
-        })
+        });
     }
 
     typeChecking(value, setting){
@@ -189,7 +189,7 @@ class Clap{
     draw_levels(ctx){
         for (let color in this.colorLevels){
             if (!this.colorLevels[color].displayed){
-                continue
+                continue;
             }
             ctx.globalCompositeOperation = this.colorLevels[color].mode;
             this.draw_level(ctx, this.colorLevels[color]);
@@ -198,7 +198,7 @@ class Clap{
     
     draw_level(ctx, color){
         ctx.fillStyle=color.color_value;
-        let points = [color.in.min,color.in.max,color.out.max,color.out.min]
+        let points = [color.in.min,color.in.max,color.out.max,color.out.min];
         let vertices = this.draw_from_points(ctx, points);
         this.draw_vertices(ctx, color.color_value, vertices);
     }
@@ -214,7 +214,7 @@ class Clap{
                 this.height - this.margin],
             "sw" : [((points[3]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
                 this.height - this.margin]
-        }
+        };
         ctx.moveTo(vertices.nw[0], vertices.nw[1]);
         ctx.lineTo(vertices.ne[0], vertices.ne[1]);
         ctx.lineTo(vertices.se[0], vertices.se[1]);
@@ -248,7 +248,6 @@ class Clap{
         grd.addColorStop(1,"white");
         ctx.fillStyle=grd;
         let points = this.get_externals_vertices();
-        console.log(points)
         this.draw_from_points(ctx, points);
     }
 
@@ -299,9 +298,9 @@ class Clap{
             if (this.colorLevels[color].active){
                 label.style.textDecoration = "underline";
             }
-            label.ondblclick = (e)=>{
+            label.ondblclick = ()=>{
                 this.selectActive(this.colorLevels[color]);
-            }
+            };
             selector.appendChild(box);
             selector.appendChild(label);
         }
@@ -339,8 +338,8 @@ class Clap{
             ];
             for (let i = 0; i < position.length; i++){
                 if ((position[i][0] - this.handlerSize/2 < evt.pageX && evt.pageX < position[i][0] + this.handlerSize/2) && (position[i][1] - this.handlerSize/2 < evt.pageY && evt.pageY < position[i][1] + this.handlerSize/2)){
-                    this.selectedVertice = vertices[i]
-                    break
+                    this.selectedVertice = vertices[i];
+                    break;
                 }
             }
         }
