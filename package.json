@@ -1,6 +1,6 @@
 {
   "name": "clap",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "A front JS Selector for rgba color level manipulation",
   "main": "clap.js",
   "dependencies": {},
