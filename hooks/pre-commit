@@ -1,0 +1,30 @@
+#! /bin/bash
+
+# Optimizations  and tasks running for production
+# pre-commit hook to run grunt tasks everytime a css and js file is changed
+# Inspired by https://gist.github.com/vinitkumar/pre-commit
+
+cssFile = "clap.min.css"
+jsFile = "clap.min.js"
+
+for file in $( exec git diff-index --cached --name-only HEAD )
+do
+    if [[ $file == *src/*".css"* ]]; then
+        containsCssFile=1
+    fi
+    if [[ $file == *src/*".js"* ]]; then
+      containsJsFile=1
+    fi
+done
+
+if [[ $containsCssFile ]]; then
+    echo "Generating $cssFile"
+    grunt css
+    git add $cssFile
+fi
+
+if [[ $containsJsFile ]]; then
+  echo "Concating and minifying js files.Hold tight"
+  grunt js
+  git add $jsFile
+fi
