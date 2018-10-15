@@ -20,6 +20,7 @@ class Clap{
         this.gradient = false;
         this.selector_height = 20;
         this.eye_size = 8;
+        this.colorOrder = ["red", "green", "blue", "alpha"];
         this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"}, {"key":"linewidth","type":"int"}, {"key":"handlerSize","type":"int"}, {"key":"boundary","type":"boolean"}, {"key":"boundaryColor","type":"hexString"}, {"key":"gradient","type":"boolean"}];
 
         if (settings != {}){
@@ -105,15 +106,13 @@ class Clap{
         this.ctx = this.slider.getContext('2d');
         this.draw();
         this.slider.origin = this.slider.getBoundingClientRect();
-        this.selector = document.createElement("div");
-        this.container.appendChild(this.selector);
-        this.showHideBoxes(this.selector);
         this.clicked = false;
         this.selectedVertice = null;
 
         this.slider.onmousedown = (evt)=>{
             this.clicked = true;
             this.isVerticeSelected(evt);
+            this.isSelectorClicked(evt);
         };
         this.slider.onmouseup = ()=>{
             this.clicked = false;
@@ -284,10 +283,9 @@ class Clap{
     }
 
     draw_selectors(){
-        let colors = ["red", "green", "blue", "alpha"];
+        let colors = this.colorOrder;
         for (let color in colors){
-            this.draw_selector(colors, color)
-            console.log(color);
+            this.draw_selector(colors, color);
         }
     }
 
@@ -329,42 +327,6 @@ class Clap{
         ctx.fillText(text, color*30 + 2*this.eye_size,this.height + this.selector_height*(2/3));
     }
 
-    showHideBoxes(selector){
-        selector.innerHTML = "";
-        for (let color in this.colorLevels){
-            let box = document.createElement("input");
-            let label = document.createElement("label");
-            box.type = "checkbox";
-            box.value = this.colorLevels[color].label;
-            box.id = "cb-"+this.colorLevels[color].label;
-            if (this.colorLevels[color].displayed){
-                box.checked = true;
-            }
-            box.addEventListener('change', (evt)=>{
-                let current_color = evt.target.value;
-                if (evt.target.checked){
-                    this.colorLevels[current_color].displayed = true;
-                }else{
-                    this.colorLevels[current_color].displayed = false;
-                    this.colorLevels[current_color].active = false;
-                }
-                this.showHideBoxes(selector);
-            });
-            label.for = box.id;
-            label.innerHTML = this.colorLevels[color].label;
-            if (this.colorLevels[color].active){
-                label.style.textDecoration = "underline";
-            }
-            label.ondblclick = ()=>{
-                this.selectActive(this.colorLevels[color]);
-            };
-            selector.appendChild(box);
-            selector.appendChild(label);
-        }
-        this.container.dispatchEvent(this.event);
-        this.draw();
-    }
-    
     selectActive(active_color){
         for (let color in this.colorLevels){
             if (this.colorLevels[color]===active_color && this.colorLevels[color].active==false){
@@ -377,7 +339,6 @@ class Clap{
                 this.colorLevels[color].active = false;
             }
         }
-        this.showHideBoxes(this.selector);
     }
 
     isVerticeSelected(evt){
@@ -401,5 +362,21 @@ class Clap{
                 }
             }
         }
+    }
+
+    isSelectorClicked(evt){
+        if (evt.pageY-this.slider.origin.y > this.height){
+            for (let color in this.colorOrder){
+                if(Number(color) * 30 < evt.pageX-this.slider.origin.x && evt.pageX-this.slider.origin.x < (Number(color) + 1) *30){
+                    if(evt.pageX-this.slider.origin.x < Number(color) * 30 + 15){
+                        this.colorLevels[this.colorOrder[color]].displayed = ! this.colorLevels[this.colorOrder[color]].displayed;
+                        this.colorLevels[this.colorOrder[color]].active = false;
+                    }else{
+                        this.selectActive(this.colorLevels[this.colorOrder[color]]);
+                    }
+                }
+            }
+        }
+        this.draw();
     }
 }

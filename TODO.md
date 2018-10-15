@@ -8,7 +8,7 @@
 - Add type checking to settings [X]
 - Set Gradient to displayed colors [X]
 - Add original square limitation [X]
-- Add better mechanism for display and selection [ ]
+- Add better mechanism for display and selection [X]
 - Add better graphism for display and selection [X]
 - Add minification process [X]
 - Add ECMA 5 strict translation [X]
