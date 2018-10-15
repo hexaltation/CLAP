@@ -79,9 +79,10 @@ Default max value is 255.
 
 ## Visual Interaction
 
-Checkbox are for hide/display mechanism purpose.  
-If you want to interact with a layer, double-click on its name.  
-When selected it will be underlined.  
+Eyes at the bottom of slider are for hide/display mechanism purpose.
+Click on it to switch beetween modes.  
+If you want to interact with a layer, click on its letter.
+If a layer is active the leter will be uppercase.  
 Click on the handlers drawn on vertices and move the mouse while holding mouse down to move it.  
 
 ## How contibute
