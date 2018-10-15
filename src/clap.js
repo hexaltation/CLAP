@@ -18,6 +18,8 @@ class Clap{
         this.boundary = false;
         this.boundaryColor = "#FFFFFF";
         this.gradient = false;
+        this.selector_height = 20;
+        this.eye_size = 8;
         this.customisable = [{"key":"width","type":"int"}, {"key":"height","type":"int"}, {"key":"background","type":"hexString"}, {"key":"margin","type":"int"}, {"key":"min","type":"int"}, {"key":"max","type":"int"}, {"key":"linewidth","type":"int"}, {"key":"handlerSize","type":"int"}, {"key":"boundary","type":"boolean"}, {"key":"boundaryColor","type":"hexString"}, {"key":"gradient","type":"boolean"}];
 
         if (settings != {}){
@@ -100,7 +102,8 @@ class Clap{
         this.container.appendChild(this.slider);
         this.event = new Event('clap_change', {bubbles: true});
         this.event.colorLevels = this.colorLevels;
-        this.draw(this.slider);
+        this.ctx = this.slider.getContext('2d');
+        this.draw();
         this.slider.origin = this.slider.getBoundingClientRect();
         this.selector = document.createElement("div");
         this.container.appendChild(this.selector);
@@ -130,7 +133,7 @@ class Clap{
                 }else{
                     this.selectedVertice.obj[this.selectedVertice.key]=value;
                 }
-                this.draw(this.slider);
+                this.draw();
             }
         };
     }
@@ -163,15 +166,15 @@ class Clap{
         }
     }
 
-    draw(elem){
-        let ctx = elem.getContext('2d');
+    draw(){
+        let ctx = this.ctx;
         try{
             ctx.canvas.width = this.width;
-            ctx.canvas.height = this.height;
-            this.draw_levels(ctx);
+            ctx.canvas.height = this.height+this.selector_height;
+            this.draw_levels();
             if(this.gradient){
                 ctx.globalCompositeOperation = 'multiply';
-                this.draw_gradient(ctx);
+                this.draw_gradient();
             }
             ctx.globalCompositeOperation = 'destination-over';
             if (this.boundary){
@@ -180,30 +183,35 @@ class Clap{
             }
             ctx.fillStyle = this.background;
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            elem.dispatchEvent(this.event);
+            ctx.globalCompositeOperation = 'source-over';
+            this.draw_selectors();
+            this.slider.dispatchEvent(this.event);
         }catch(e){
             console.log(e);
         }
     }
     
-    draw_levels(ctx){
+    draw_levels(){
+        let ctx = this.ctx;
         for (let color in this.colorLevels){
             if (!this.colorLevels[color].displayed){
                 continue;
             }
             ctx.globalCompositeOperation = this.colorLevels[color].mode;
-            this.draw_level(ctx, this.colorLevels[color]);
+            this.draw_level(this.colorLevels[color]);
         }
     }
     
-    draw_level(ctx, color){
+    draw_level(color){
+        let ctx = this.ctx;
         ctx.fillStyle=color.color_value;
         let points = [color.in.min,color.in.max,color.out.max,color.out.min];
-        let vertices = this.draw_from_points(ctx, points);
-        this.draw_vertices(ctx, color.color_value, vertices);
+        let vertices = this.draw_from_points(points);
+        this.draw_vertices(color.color_value, vertices);
     }
 
-    draw_from_points(ctx, points){
+    draw_from_points(points){
+        let ctx = this.ctx;
         ctx.beginPath();
         let vertices = {
             "nw" : [((points[0]-this.min)*(this.width-2*this.margin))/(Math.abs(this.max-this.min)) + this.margin,
@@ -224,13 +232,14 @@ class Clap{
         return vertices;
     }
     
-    draw_vertices(ctx, color, vertices){
+    draw_vertices(color, vertices){
         for (let vertex in vertices){
-            this.draw_vertex(ctx, color, vertices[vertex]);
+            this.draw_vertex(color, vertices[vertex]);
         }
     }
     
-    draw_vertex(ctx, color, vertex){
+    draw_vertex(color, vertex){
+        let ctx = this.ctx;
         ctx.lineWidth = this.lineWidth;
         ctx.strokeStyle = color;
         ctx.beginPath();
@@ -242,13 +251,14 @@ class Clap{
         ctx.stroke();
     }
 
-    draw_gradient(ctx){
+    draw_gradient(){
+        let ctx = this.ctx;
         let grd=ctx.createLinearGradient(0,0,this.width,0);
         grd.addColorStop(0,"black");
         grd.addColorStop(1,"white");
         ctx.fillStyle=grd;
         let points = this.get_externals_vertices();
-        this.draw_from_points(ctx, points);
+        this.draw_from_points(points);
     }
 
     get_externals_vertices(){
@@ -272,7 +282,53 @@ class Clap{
         }
         return [inmin, inmax, outmax, outmin];
     }
-    
+
+    draw_selectors(){
+        let colors = ["red", "green", "blue", "alpha"];
+        for (let color in colors){
+            this.draw_selector(colors, color)
+            console.log(color);
+        }
+    }
+
+    draw_selector(colors, color){
+        this.draw_eye(colors, color);
+        this.draw_color_label(colors, color);
+    }
+
+    draw_eye(colors, color) {
+        let ctx = this.ctx;
+        ctx.lineWidth = 1;
+        ctx.fillStyle = this.colorLevels[colors[color]].color_value;
+        ctx.strokeStyle = this.colorLevels[colors[color]].color_value;
+        ctx.beginPath();
+        ctx.arc(color*30 + this.eye_size, this.height + this.selector_height/2, this.eye_size, Math.PI / 6, 5 * Math.PI / 6, false);
+        ctx.arc(color*30 + this.eye_size, this.height + this.selector_height/2 + this.eye_size, this.eye_size, 7 * Math.PI / 6, 11 * Math.PI / 6, false);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(color*30 + this.eye_size, this.height + this.selector_height/2 + this.eye_size / 2, this.eye_size / 2.5, 0, 2 * Math.PI, false);
+        if (this.colorLevels[colors[color]].displayed){
+            ctx.fill();
+        }
+        else{
+            ctx.stroke();
+        }
+    }
+
+    draw_color_label(colors, color){
+        let ctx = this.ctx;
+        ctx.lineWidth = 1;
+        ctx.fillStyle = this.colorLevels[colors[color]].color_value;
+        ctx.strokeStyle = this.colorLevels[colors[color]].color_value;
+        ctx.font = String(2*this.eye_size)+"px Monospace";
+        let text = this.colorLevels[colors[color]].label.slice(0,1);
+        if (this.colorLevels[colors[color]].active){
+            text = text.toUpperCase();
+        }
+        ctx.fillText(text, color*30 + 2*this.eye_size,this.height + this.selector_height*(2/3));
+    }
+
     showHideBoxes(selector){
         selector.innerHTML = "";
         for (let color in this.colorLevels){
@@ -290,8 +346,9 @@ class Clap{
                     this.colorLevels[current_color].displayed = true;
                 }else{
                     this.colorLevels[current_color].displayed = false;
+                    this.colorLevels[current_color].active = false;
                 }
-                this.draw(this.slider);
+                this.showHideBoxes(selector);
             });
             label.for = box.id;
             label.innerHTML = this.colorLevels[color].label;
@@ -305,6 +362,7 @@ class Clap{
             selector.appendChild(label);
         }
         this.container.dispatchEvent(this.event);
+        this.draw();
     }
     
     selectActive(active_color){
