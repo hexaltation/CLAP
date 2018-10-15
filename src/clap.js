@@ -370,9 +370,10 @@ class Clap{
                 if(Number(color) * 30 < evt.pageX-this.slider.origin.x && evt.pageX-this.slider.origin.x < (Number(color) + 1) *30){
                     if(evt.pageX-this.slider.origin.x < Number(color) * 30 + 15){
                         this.colorLevels[this.colorOrder[color]].displayed = ! this.colorLevels[this.colorOrder[color]].displayed;
-                        this.colorLevels[this.colorOrder[color]].active = false;
+                        ! this.colorLevels[this.colorOrder[color]].displayed ? this.colorLevels[this.colorOrder[color]].active = false : this.colorLevels[this.colorOrder[color]].active;
                     }else{
                         this.selectActive(this.colorLevels[this.colorOrder[color]]);
+                        this.colorLevels[this.colorOrder[color]].active ? this.colorLevels[this.colorOrder[color]].displayed = true : this.colorLevels[this.colorOrder[color]].displayed;
                     }
                 }
             }
