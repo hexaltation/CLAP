@@ -85,7 +85,7 @@ If you want to interact with a layer, click on its letter.
 If a layer is active the leter will be uppercase.  
 Click on the handlers drawn on vertices and move the mouse while holding mouse down to move it.  
 
-## How contibute
+## How contribute
 
 Please check that your git version is above or equal to 2.9.  
 ```bash
