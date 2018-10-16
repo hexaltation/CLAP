@@ -12,3 +12,5 @@
 - Add better graphism for display and selection [X]
 - Add minification process [X]
 - Add ECMA 5 strict translation [X]
+- Calculate coordinates of gradient only from displayed layers [ ]
+- Calculate 6 points path for grandient to cover hourglass shapes [ ]
